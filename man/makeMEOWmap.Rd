@@ -37,7 +37,7 @@ makeMEOWmap(newdata, fillColName, regionColName = type, type = "ECOREGION",
 
 \item{excludeNoDataAreas}{Exclude areas/regions from the plot with no data?}
 
-\item{...}{Other arguments to be supplied to fitting function.}
+\item{...}{Other arguments to be supplied to color scale}
 }
 \value{
 Returns \code{\link{ggplot}} object

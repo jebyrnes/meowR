@@ -46,3 +46,24 @@ NULL
 #'   
 #'   base_province_ggplot
 NULL
+
+
+#' Map of the world
+#' @name worldmap
+#' @aliases worldmap.df
+#' @usage
+#' data(worldmap)
+#' data(worldmap.df)
+#' @description Data from \link{maps} package. All datasets provides either as \code{\link{SpatialPolygonsDataFrame}} objects or, with .df, as \code{\link{data.frame}} objects
+#'
+#' @docType data
+#' @keywords data
+#' @examples
+#' 
+#' data(worldmap)
+#' plot(worldmap, type="l")
+#' 
+#' data(worldmap.df)
+#' ggplot(worldmap.df, aes(x=longitude, y=latitude))+geom_path()
+#' 
+NULL
