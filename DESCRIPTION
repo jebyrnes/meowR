@@ -11,5 +11,6 @@ Depends:
     ggplot2,
     plyr,
     maps,
-    RColorBrewer
+    RColorBrewer,
+    ggplot2
 License: CC0
