@@ -1,0 +1,43 @@
+#' @title getRegions
+#'
+#' @description
+#' \code{getRegions} Gets regional information for your dataset
+#' 
+#'
+#' @author Jarrett Byrnes.
+#' @param lats Latitude values in decimal degrees
+#' @param longs Longitude values in decimal degrees
+#' 
+#' 
+#' @export
+#' @return Returns a data frame of ECOREGION, PROVINCE, and REALMs for each point
+#' 
+#' seealso \code{\link{sp::over}}
+#'
+#' @examples
+#' 
+#' data(regions)
+#' 
+#' latlong <- data.frame(lat = c(50.0944444, 33.4691667, 34.0348833, 
+#'      55.0869876, 51.7787776, 
+#'      49.6088889, -35.750729),
+#'      long=c(-127.55889, -119.53028, 
+#'      -119.70308, -161.87444, 
+#'      178.30199, -126.78056, 150.259155))
+#'      
+#' regionalData <- getRegions(latlong$lat, latlong$long)
+#' 
+#' newdata <- cbind(latlong, regionalData)
+#' 
+#' newdata
+
+
+getRegions <- function(lats, longs){
+  coords <- cbind(longs, lats)
+  FB.sp <- SpatialPoints(coords)
+  proj4string(FB.sp) <- proj4string(regions)
+  ret <- over(FB.sp, regions)
+  
+  return(ret[,which(names(ret) %in% c("ECOREGION", "PROVINCE", "REALM"))])
+}
+
