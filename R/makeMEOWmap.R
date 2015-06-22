@@ -19,7 +19,7 @@
 #' @param na.value How are NAs areas handled for fill? Defaults to making them not plot - NA.
 #' @param add.worldmap Should a map of the world be plotted under the regions? Defaults to FALSE
 #' @param excludeNoDataAreas Exclude areas/regions from the plot with no data?
-#' @param ... Other arguments to be supplied to fitting function.
+#' @param ... Other arguments to be supplied to color scale
 #' 
 #' 
 #' @export
