@@ -14,8 +14,46 @@ Installation
     library(devtools)
     install_github("meowR", "jebyrnes")
 
-Plotting the SpatialPolygons
-----------------------------
+Adding MEOW information to your data
+------------------------------------
+
+Using the sp function over, getRegions provides a wrapper to add MEOW
+information to your dataset.
+
+    data(regions)
+
+    latlong <- data.frame(lat = c(50.0944444, 33.4691667, 34.0348833, 
+         55.0869876, 51.7787776, 
+         49.6088889, -35.750729),
+         long=c(-127.55889, -119.53028, 
+         -119.70308, -161.87444, 
+         178.30199, -126.78056, 150.259155))
+         
+    regionalData <- getRegions(latlong$lat, latlong$long)
+
+    newdata <- cbind(latlong, regionalData)
+
+    newdata
+
+    ##         lat      long                                     ECOREGION
+    ## 1  50.09444 -127.5589 Oregon, Washington, Vancouver Coast and Shelf
+    ## 2  33.46917 -119.5303                           Northern California
+    ## 3  34.03488 -119.7031                     Southern California Bight
+    ## 4  55.08699 -161.8744                                Gulf of Alaska
+    ## 5  51.77878  178.3020                              Aleutian Islands
+    ## 6  49.60889 -126.7806 Oregon, Washington, Vancouver Coast and Shelf
+    ## 7 -35.75073  150.2592                                     Cape Howe
+    ##                           PROVINCE                      REALM
+    ## 1 Cold Temperate Northeast Pacific Temperate Northern Pacific
+    ## 2 Cold Temperate Northeast Pacific Temperate Northern Pacific
+    ## 3 Warm Temperate Northeast Pacific Temperate Northern Pacific
+    ## 4 Cold Temperate Northeast Pacific Temperate Northern Pacific
+    ## 5 Cold Temperate Northeast Pacific Temperate Northern Pacific
+    ## 6 Cold Temperate Northeast Pacific Temperate Northern Pacific
+    ## 7       Southeast Australian Shelf      Temperate Australasia
+
+Plotting the Ecoregions, Provinces, and Realms
+----------------------------------------------
 
     library(meowR)
     data(regions)
@@ -28,7 +66,7 @@ Plotting the SpatialPolygons
     plot(realms, lwd=2, border="blue", main="Realm")
     par(mfrow=c(1,1), mar=c(5, 4, 4, 2) + 0.1)
 
-![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-4-1.png)
 
 Using data.frame representations with ggplot2 and external data to make a choropleth plot
 -----------------------------------------------------------------------------------------
@@ -48,7 +86,7 @@ with plot or ggplot2.
       
       base_province_ggplot
 
-![](README_files/figure-markdown_strict/unnamed-chunk-4-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-5-1.png)
 
     data(regions.df)
 
@@ -59,7 +97,7 @@ with plot or ggplot2.
 
     ## Joining by: Ecoregions
 
-![](README_files/figure-markdown_strict/unnamed-chunk-5-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-6-1.png)
 
 Version numbers
 ---------------

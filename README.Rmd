@@ -17,7 +17,28 @@ install_github("meowR", "jebyrnes")
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(meowR)
 ```
-## Plotting the SpatialPolygons
+
+## Adding MEOW information to your data
+Using the sp function over, getRegions provides a wrapper to add MEOW information to your dataset.
+
+```{r}
+data(regions)
+
+latlong <- data.frame(lat = c(50.0944444, 33.4691667, 34.0348833, 
+     55.0869876, 51.7787776, 
+     49.6088889, -35.750729),
+     long=c(-127.55889, -119.53028, 
+     -119.70308, -161.87444, 
+     178.30199, -126.78056, 150.259155))
+     
+regionalData <- getRegions(latlong$lat, latlong$long)
+
+newdata <- cbind(latlong, regionalData)
+
+newdata
+```
+
+## Plotting the Ecoregions, Provinces, and Realms
 
 ```{r}
 library(meowR)
