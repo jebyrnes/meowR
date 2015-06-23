@@ -18,6 +18,7 @@
 #' @param dataOut Return a merged dataframe for plotting instead of a plot? Defaults to \code{FALSE}
 #' @param na.value How are NAs areas handled for fill? Defaults to making them not plot - NA.
 #' @param add.worldmap Should a map of the world be plotted under the regions? Defaults to FALSE
+#' @param fillAlphaColName Colname of column used to scale alpha level of fill
 #' @param excludeNoDataAreas Exclude areas/regions from the plot with no data?
 #' @param ... Other arguments to be supplied to color scale
 #' 
@@ -42,43 +43,46 @@
 # type is whether this is an ECOREGION, PROVINCE, or REALM map where
 # the regionColName's values match the appropriate type of map
 # and fillColName is the name of the column that will determine the fill color
-makeMEOWmap <- function(newdata, fillColName, regionColName=type, type="ECOREGION", 
-                        fillPal=brewer.pal(11, "Spectral"), pal="Spectral",
-                        pathCol="black", pathAlpha=1,
-                        guide = guide_colourbar(title=fillColName),
-                        dataOut=FALSE,  na.value=NA, add.worldmap=FALSE, 
-                        excludeNoDataAreas=T, ...){
+makeMEOWmap <- function (newdata, fillColName, regionColName = type, type = "ECOREGION", 
+                         fillPal = brewer.pal(11, "Spectral"), pal = "Spectral", pathCol = "black", 
+                         pathAlpha = 1, guide = guide_colourbar(title = fillColName), 
+                         dataOut = FALSE, na.value = NA, add.worldmap = FALSE, 
+                         fillAlphaColName=NULL, excludeNoDataAreas = T, 
+                         ...) 
+{
   regionData <- regions.df
-  if(type=="PROVINCE") regionData <- provinces.df
-  if(type=="REALM") regionData <- realms.df
-  
-  #sometimes the colname is different
-  if(regionColName != type) regionData[[regionColName]] <- regionData[[type]]
-  
+  if (type == "PROVINCE") 
+    regionData <- provinces.df
+  if (type == "REALM") 
+    regionData <- realms.df
+  if (regionColName != type) 
+    regionData[[regionColName]] <- regionData[[type]]
   regionData <- join(regionData, newdata)
   regionData$score <- regionData[[fillColName]]
-  
-  if(excludeNoDataAreas && sum(is.na(regionData$score))>0) 
-    regionData <- regionData[-which(is.na(regionData$score)),]
-  
-  if(dataOut) return(regionData)
-  
-  ret <- ggplot(regionData) + theme_bw(base_size=17) +
-    aes(long,lat) + 
-    geom_polygon(mapping=aes(fill=score, group=group)) +
-    geom_path(color=pathCol, alpha=pathAlpha, mapping=aes(group=group)) +
-    coord_equal() #
-  
-  if(is.numeric(regionData$score)){
-    ret <- ret + scale_fill_gradientn(colours=fillPal, guide=guide, na.value=na.value, ...)
-  }else{
-    ret <- ret + scale_fill_manual(values=fillPal, guide=guide, na.value=na.value, ...)
-    
+  regionData$fillAlpha <- NA
+  if(!is.null(fillAlphaColName)) regionData$fillAlpha <- regionData[[fillAlphaColName]]
+  if (excludeNoDataAreas && sum(is.na(regionData$score)) > 
+        0) 
+    regionData <- regionData[-which(is.na(regionData$score)), 
+                             ]
+  if (dataOut) 
+    return(regionData)
+  ret <- ggplot(regionData) + theme_bw(base_size = 17) + aes(long, 
+                                                             lat) + 
+    geom_polygon(mapping = aes(fill = score, group = group, alpha = fillAlpha)) + 
+    geom_path(color = pathCol, alpha = pathAlpha, mapping = aes(group = group)) + 
+    coord_equal()
+  if (is.numeric(regionData$score)) {
+    ret <- ret + scale_fill_gradientn(colours = fillPal, 
+                                      guide = guide, na.value = na.value, ...)
   }
-  
-  if(add.worldmap){ 
-    ret <- ret + geom_path(data=worldmap.df, aes(x=longitude, y=latitude, group=NA))
+  else {
+    ret <- ret + scale_fill_manual(values = fillPal, guide = guide, 
+                                   na.value = na.value, ...)
   }
-  
+  if (add.worldmap) {
+    ret <- ret + geom_path(data = worldmap.df, aes(x = longitude, 
+                                                   y = latitude, group = NA))
+  }
   ret
 }
