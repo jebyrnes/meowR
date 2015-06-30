@@ -20,6 +20,8 @@
 #' @param add.worldmap Should a map of the world be plotted under the regions? Defaults to FALSE
 #' @param fillAlphaColName Colname of column used to scale alpha level of fill
 #' @param excludeNoDataAreas Exclude areas/regions from the plot with no data?
+#' @param prevggplot A ggplot argument that this plot will be added on top of. If null, a new
+#' ggplot object is created.
 #' @param ... Other arguments to be supplied to color scale
 #' 
 #' 
@@ -47,7 +49,7 @@ makeMEOWmap <- function (newdata, fillColName, regionColName = type, type = "ECO
                          fillPal = brewer.pal(11, "Spectral"), pal = "Spectral", pathCol = "black", 
                          pathAlpha = 1, guide = guide_colourbar(title = fillColName), 
                          dataOut = FALSE, na.value = NA, add.worldmap = FALSE, 
-                         fillAlphaColName=NULL, excludeNoDataAreas = T, 
+                         fillAlphaColName=NULL, excludeNoDataAreas = T, prevggplot=NULL,
                          ...) 
 {
   regionData <- regions.df
@@ -67,10 +69,12 @@ makeMEOWmap <- function (newdata, fillColName, regionColName = type, type = "ECO
                              ]
   if (dataOut) 
     return(regionData)
-  ret <- ggplot(regionData) + theme_bw(base_size = 17) + aes(long, 
-                                                             lat) + 
-    geom_polygon(mapping = aes(fill = score, group = group, alpha = fillAlpha)) + 
-    geom_path(color = pathCol, alpha = pathAlpha, mapping = aes(group = group)) + 
+  
+  if(is.null(prevggplot)) prevggplot <- ggplot()
+  
+  ret <- prevggplot + theme_bw(base_size = 17)  + 
+    geom_polygon(data=regionData, mapping = aes(x=long, y=lat, fill = score, group = group, alpha = fillAlpha)) + 
+    geom_path(data=regionData, color = pathCol, alpha = pathAlpha, mapping = aes(x=long, y=lat, group = group)) + 
     coord_equal()
   if (is.numeric(regionData$score)) {
     ret <- ret + scale_fill_gradientn(colours = fillPal, 
