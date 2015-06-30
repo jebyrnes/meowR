@@ -1,5 +1,5 @@
 Package: meowR
-Version: 0.5.3
+Version: 0.5.4
 Date: 2015-06-01
 Title: Marine Ecoregions of the World in R
 Description: Methods and data for adding Spalding et al.'s Marine Ecoregions of the World to plots. Data from http://www.marineregions.org/downloads.php downloaded on June 1st 2015.
