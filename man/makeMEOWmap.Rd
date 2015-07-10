@@ -8,7 +8,7 @@ makeMEOWmap(newdata, fillColName, regionColName = type, type = "ECOREGION",
   fillPal = brewer.pal(11, "Spectral"), pal = "Spectral",
   pathCol = "black", pathAlpha = 1, guide = guide_colourbar(title =
   fillColName), dataOut = FALSE, na.value = NA, add.worldmap = FALSE,
-  fillAlphaColName = NULL, excludeNoDataAreas = T, ...)
+  fillAlphaColName = NULL, excludeNoDataAreas = T, prevggplot = NULL, ...)
 }
 \arguments{
 \item{newdata}{dataset to be used}
@@ -38,6 +38,9 @@ makeMEOWmap(newdata, fillColName, regionColName = type, type = "ECOREGION",
 \item{fillAlphaColName}{Colname of column used to scale alpha level of fill}
 
 \item{excludeNoDataAreas}{Exclude areas/regions from the plot with no data?}
+
+\item{prevggplot}{A ggplot argument that this plot will be added on top of. If null, a new
+ggplot object is created.}
 
 \item{...}{Other arguments to be supplied to color scale}
 }
