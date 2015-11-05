@@ -2,6 +2,7 @@
 
 export(getRegions)
 export(makeMEOWmap)
+export(makeMEOWmapData)
 import(RColorBrewer)
 import(ggplot2)
 import(maps)

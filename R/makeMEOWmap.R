@@ -52,21 +52,9 @@ makeMEOWmap <- function (newdata, fillColName, regionColName = type, type = "ECO
                          fillAlphaColName=NULL, excludeNoDataAreas = T, prevggplot=NULL,
                          ...) 
 {
-  regionData <- regions.df
-  if (type == "PROVINCE") 
-    regionData <- provinces.df
-  if (type == "REALM") 
-    regionData <- realms.df
-  if (regionColName != type) 
-    regionData[[regionColName]] <- regionData[[type]]
-  regionData <- join(regionData, newdata)
-  regionData$score <- regionData[[fillColName]]
-  regionData$fillAlpha <- NA
-  if(!is.null(fillAlphaColName)) regionData$fillAlpha <- regionData[[fillAlphaColName]]
-  if (excludeNoDataAreas && sum(is.na(regionData$score)) > 
-        0) 
-    regionData <- regionData[-which(is.na(regionData$score)), 
-                             ]
+  regionData <- makeMEOWmapData(newdata, fillColName, fillAlphaColName,
+                                regionColName, type,
+                                excludeNoDataAreas)
   if (dataOut) 
     return(regionData)
   
